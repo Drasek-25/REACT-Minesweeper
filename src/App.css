@@ -1,0 +1,30 @@
+html,
+body,
+#root {
+   margin: 0px;
+   height: 100%;
+}
+
+.App {
+   height: 100%;
+   width: 100%;
+   background-color: #0f0f0f;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.gameWindow {
+}
+.minefield {
+}
+.minefield_row {
+   display: flex;
+   flex-direction: row;
+}
+.minefield_tile {
+   border: 1px black solid;
+   background-color: yellow;
+   height: 25px;
+   width: 25px;
+   text-align: center;
+}
