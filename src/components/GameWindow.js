@@ -31,10 +31,13 @@ const GameWindow = () => {
    class Tile {
       constructor(x, y) {
          this.id = `${x} ${y}`;
+         this.x = x;
+         this.y = y;
          this.flag = false;
          this.testFlag = false;
          this.neighbors = [];
          this.mine = false;
+         this.nearbyMines = 0;
       }
    }
 
@@ -50,20 +53,26 @@ const GameWindow = () => {
       let startY = map[y - 1] === undefined ? y : y - 1;
       let endY = map[y + 1] === undefined ? y : y + 1;
       let nearbyMines = 0;
+      let neighbors = [];
 
       for (let i = startY; i <= endY; i++) {
          for (let j = startX; j <= endX; j++) {
             if ((i === y) & (j === x)) continue;
-            if (map[i][j] === 9) nearbyMines++;
+            if (map[i][j].mine === true) nearbyMines++;
+            neighbors.push([j, i]);
          }
       }
-      return nearbyMines;
+      return [nearbyMines, neighbors];
    };
 
    const createMatrix = () => {
       let matrix = [];
       for (let i = 0; i < settings.height; i++) {
-         matrix.push("0".repeat(settings.width).split(""));
+         matrix.push([]);
+         for (let j = 0; j < settings.width; j++) {
+            let tile = new Tile(j, i);
+            matrix[i].push(tile);
+         }
       }
       return matrix;
    };
@@ -71,7 +80,7 @@ const GameWindow = () => {
    const populateMines = (matrix) => {
       for (let i = 0; i < settings.mines; i++) {
          let [x, y] = randomLocation();
-         if (matrix[y][x] === "0") matrix[y][x] = 9;
+         if (matrix[y][x].mine === false) matrix[y][x].mine = true;
          else i--;
       }
       return matrix;
@@ -80,19 +89,24 @@ const GameWindow = () => {
    const populateMineCount = (matrix) => {
       for (let i = 0; i < matrix.length; i++) {
          for (let j = 0; j < matrix[i].length; j++) {
-            if (matrix[i][j] === "0")
-               matrix[i][j] = getNearbyCount(j, i, matrix);
+            if (matrix[i][j].mine === false) {
+               const [nearbyMines, neighbors] = getNearbyCount(j, i, matrix);
+               matrix[i][j].nearbyMines = nearbyMines;
+               matrix[i][j].neighbors = neighbors;
+            }
          }
       }
       return matrix;
    };
 
    const generateMap = () => {
-      return populateMineCount(populateMines(createMatrix()));
+      let newMap = populateMineCount(populateMines(createMatrix()));
+      console.log(newMap);
+      return newMap;
    };
 
    useEffect(() => {
-      setMap(generateMap);
+      setMap(generateMap());
    }, []);
 
    return (
