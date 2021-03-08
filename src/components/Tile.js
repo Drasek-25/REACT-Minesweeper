@@ -1,20 +1,7 @@
-const Tile = ({ obj }) => {
-   const leftClick = () => {};
-   const rightClick = () => {};
-   const middleClick = () => {};
+const Tile = ({ obj, tileClick }) => {
    const handleClick = (e) => {
       e.preventDefault();
-      switch (e.nativeEvent.which) {
-         case 1:
-            leftClick();
-            break;
-         case 2:
-            middleClick();
-            break;
-         case 3:
-            rightClick();
-            break;
-      }
+      tileClick(e.nativeEvent.which);
    };
 
    return (

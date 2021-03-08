@@ -28,6 +28,23 @@ const GameWindow = () => {
    const [settings, setSettings] = useState(mapTypes.large);
    const [map, setMap] = useState([]);
 
+   const leftClick = () => {};
+   const rightClick = () => {};
+   const middleClick = () => {};
+   const tileClick = (num) => {
+      switch (num) {
+         case 1:
+            leftClick();
+            break;
+         case 2:
+            middleClick();
+            break;
+         case 3:
+            rightClick();
+            break;
+      }
+   };
+
    class Tile {
       constructor(x, y) {
          this.id = `${x} ${y}`;
@@ -111,7 +128,7 @@ const GameWindow = () => {
 
    return (
       <div className="gameWindow">
-         <Minefield map={map} />
+         <Minefield map={map} tileClick={tileClick} />
       </div>
    );
 };
