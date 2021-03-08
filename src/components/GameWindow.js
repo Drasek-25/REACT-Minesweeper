@@ -47,18 +47,18 @@ const GameWindow = () => {
       return [x, y];
    };
 
-   const getNearbyCount = (x, y, map) => {
-      let startX = map[y][x - 1] === undefined ? x : x - 1;
-      let endX = map[y][x + 1] === undefined ? x : x + 1;
-      let startY = map[y - 1] === undefined ? y : y - 1;
-      let endY = map[y + 1] === undefined ? y : y + 1;
+   const getNearbyCount = (x, y, matrix) => {
+      let startX = matrix[y][x - 1] === undefined ? x : x - 1;
+      let endX = matrix[y][x + 1] === undefined ? x : x + 1;
+      let startY = matrix[y - 1] === undefined ? y : y - 1;
+      let endY = matrix[y + 1] === undefined ? y : y + 1;
       let nearbyMines = 0;
       let neighbors = [];
 
       for (let i = startY; i <= endY; i++) {
          for (let j = startX; j <= endX; j++) {
             if ((i === y) & (j === x)) continue;
-            if (map[i][j].mine === true) nearbyMines++;
+            if (matrix[i][j].mine === true) nearbyMines++;
             neighbors.push([j, i]);
          }
       }
