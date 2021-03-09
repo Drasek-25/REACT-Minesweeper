@@ -29,9 +29,20 @@ const GameWindow = () => {
    const [map, setMap] = useState([]);
 
    const leftClick = () => {};
-   const rightClick = () => {};
+   const rightClick = (obj) => {
+      let updatedMap = map;
+      if (obj.flag === false && obj.testFlag === false) {
+         updatedMap[obj.y][obj.x].flag = true;
+      } else if (obj.flag === true && obj.testFlag === false) {
+         updatedMap[obj.y][obj.x].testFlag = true;
+         updatedMap[obj.y][obj.x].flag = false;
+      } else if (obj.flag === false && obj.testFlag === true) {
+         updatedMap[obj.y][obj.x].testFlag = false;
+      }
+      setMap(updatedMap);
+   };
    const middleClick = () => {};
-   const tileClick = (num) => {
+   const tileClick = (num, obj) => {
       switch (num) {
          case 1:
             leftClick();
@@ -40,7 +51,9 @@ const GameWindow = () => {
             middleClick();
             break;
          case 3:
-            rightClick();
+            rightClick(obj);
+            break;
+         default:
             break;
       }
    };
