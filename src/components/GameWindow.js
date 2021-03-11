@@ -28,9 +28,13 @@ const GameWindow = () => {
    const [settings, setSettings] = useState(mapTypes.large);
    const [map, setMap] = useState([]);
 
+   const revealTile = (obj) => {
+      obj.revealed = true;
+      return obj;
+   };
    const leftClick = (obj) => {
       let updatedMap = [...map];
-      updatedMap[obj.y][obj.x].revealed = true;
+      updatedMap[obj.y][obj.x] = revealTile(obj);
       setMap(updatedMap);
    };
    const rightClick = (obj) => {
@@ -45,7 +49,14 @@ const GameWindow = () => {
       }
       setMap(updatedMap);
    };
-   const middleClick = () => {};
+   const middleClick = (obj) => {
+      let updatedMap = [...map];
+      updatedMap[obj.y][obj.x] = revealTile(obj);
+      obj.neighbors.forEach(([x, y]) => {
+         updatedMap[y][x] = revealTile(updatedMap[y][x]);
+      });
+      setMap(updatedMap);
+   };
    const tileClick = (num, obj) => {
       switch (num) {
          case 1:
@@ -124,11 +135,9 @@ const GameWindow = () => {
    const populateMineCount = (matrix) => {
       for (let i = 0; i < matrix.length; i++) {
          for (let j = 0; j < matrix[i].length; j++) {
-            if (matrix[i][j].mine === false) {
-               const [nearbyMines, neighbors] = getNearbyCount(j, i, matrix);
-               matrix[i][j].nearbyMines = nearbyMines;
-               matrix[i][j].neighbors = neighbors;
-            }
+            const [nearbyMines, neighbors] = getNearbyCount(j, i, matrix);
+            matrix[i][j].nearbyMines = nearbyMines;
+            matrix[i][j].neighbors = neighbors;
          }
       }
       return matrix;
