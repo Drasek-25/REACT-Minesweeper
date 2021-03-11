@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const Tile = ({ obj, tileClick }) => {
    const handleClick = (e) => {
       e.preventDefault();
@@ -12,10 +10,14 @@ const Tile = ({ obj, tileClick }) => {
          onContextMenu={(e) => e.preventDefault()}
          onMouseDown={(e) => handleClick(e)}
       >
-         {obj.mine && "X"}
-         {obj.flag && "F"}
-         {obj.testFlag && "TF"}
-         {!obj.mine && !obj.flag && !obj.testFlag && obj.nearbyMines}
+         <strong>
+            {obj.flag && "🚩"}
+            {obj.testFlag && "🏴"}
+            {!obj.flag &&
+               !obj.testFlag &&
+               obj.revealed &&
+               ((obj.mine && "💣") || obj.nearbyMines)}
+         </strong>
       </div>
    );
 };
