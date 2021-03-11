@@ -72,7 +72,6 @@ const GameWindow = () => {
             break;
       }
    };
-
    class Tile {
       constructor(x, y) {
          this.id = `${x} ${y}`;
