@@ -31,13 +31,13 @@ const GameWindow = () => {
    const leftClick = () => {};
    const rightClick = (obj) => {
       let updatedMap = [...map];
-      if (obj.flag === false && obj.testFlag === false) {
-         updatedMap[obj.y][obj.x].flag = true;
-      } else if (obj.flag === true && obj.testFlag === false) {
+      if (obj.flag) {
          updatedMap[obj.y][obj.x].testFlag = true;
          updatedMap[obj.y][obj.x].flag = false;
-      } else if (obj.flag === false && obj.testFlag === true) {
+      } else if (obj.testFlag) {
          updatedMap[obj.y][obj.x].testFlag = false;
+      } else {
+         updatedMap[obj.y][obj.x].flag = true;
       }
       setMap(updatedMap);
    };
