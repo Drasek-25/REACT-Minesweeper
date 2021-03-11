@@ -30,7 +30,7 @@ const GameWindow = () => {
 
    const leftClick = () => {};
    const rightClick = (obj) => {
-      let updatedMap = map;
+      let updatedMap = [...map];
       if (obj.flag === false && obj.testFlag === false) {
          updatedMap[obj.y][obj.x].flag = true;
       } else if (obj.flag === true && obj.testFlag === false) {
@@ -68,6 +68,7 @@ const GameWindow = () => {
          this.neighbors = [];
          this.mine = false;
          this.nearbyMines = 0;
+         this.revealed = false;
       }
    }
 
