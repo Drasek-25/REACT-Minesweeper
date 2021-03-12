@@ -31,6 +31,9 @@ body,
    width: 25px;
    text-align: center;
 }
+.revealed {
+   background-color: burlywood;
+}
 .popup {
    position: absolute;
    background-color: black;

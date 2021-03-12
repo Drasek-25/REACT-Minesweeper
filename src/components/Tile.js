@@ -6,7 +6,9 @@ const Tile = ({ obj, tileClick }) => {
 
    return (
       <div
-         className="minefield_tile"
+         className={
+            !obj.revealed ? "minefield_tile" : "minefield_tile revealed"
+         }
          onContextMenu={(e) => e.preventDefault()}
          onMouseDown={(e) => handleClick(e)}
       >

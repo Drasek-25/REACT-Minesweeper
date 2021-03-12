@@ -53,7 +53,6 @@ const GameWindow = () => {
          return revealNeighbors(nextZero, matrix, localTiles, queue);
       }
       let updatedMap = [...matrix];
-      console.log(localTiles);
       localTiles.forEach(
          (tile) => (updatedMap[tile.y][tile.x] = revealTile(tile))
       );
@@ -188,7 +187,6 @@ const GameWindow = () => {
 
    const generateMap = (obj, matrix) => {
       let newMap = populateMineCount(populateMines(obj, matrix));
-      console.log(newMap);
       setMap(newMap);
    };
 
@@ -198,7 +196,7 @@ const GameWindow = () => {
 
    return (
       <div className="gameWindow">
-         {/* {gameOver && <Popup />} */}
+         {gameOver && <Popup />}
          <Minefield map={map} tileClick={tileClick} />
       </div>
    );
