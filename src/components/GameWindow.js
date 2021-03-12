@@ -1,5 +1,7 @@
-import Minefield from "./Minefield";
 import { useState, useEffect } from "react";
+
+import Minefield from "./Minefield";
+import Popup from "./Popup";
 
 const GameWindow = () => {
    const mapTypes = {
@@ -27,8 +29,10 @@ const GameWindow = () => {
    };
    const [settings, setSettings] = useState(mapTypes.large);
    const [map, setMap] = useState([]);
+   const [gameOver, setGameOver] = useState(false);
 
    const revealTile = (obj) => {
+      if (obj.mine === true) setGameOver(true);
       obj.revealed = true;
       return obj;
    };
@@ -154,6 +158,7 @@ const GameWindow = () => {
 
    return (
       <div className="gameWindow">
+         {gameOver && <Popup />}
          <Minefield map={map} tileClick={tileClick} />
       </div>
    );
