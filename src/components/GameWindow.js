@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import Minefield from "./Minefield";
 import Popup from "./Popup";
+import DisplayBar from "./DisplayBar";
 
 const GameWindow = () => {
    const mapTypes = {
@@ -197,6 +198,7 @@ const GameWindow = () => {
    return (
       <div className="gameWindow">
          {gameOver && <Popup />}
+         <DisplayBar />
          <Minefield map={map} tileClick={tileClick} />
       </div>
    );
