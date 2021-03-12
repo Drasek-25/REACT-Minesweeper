@@ -31,11 +31,32 @@ const GameWindow = () => {
    const [map, setMap] = useState([]);
    const [gameOver, setGameOver] = useState(false);
 
-   const revealNeighbors = (obj, matrix) => {
-      obj.neighbors.forEach(([x, y]) => {
-         matrix[y][x] = revealTile(matrix[y][x]);
+   const revealNeighbors = (obj, matrix, localTiles = [], queue = []) => {
+      let neededFlags = obj.nearbyMines;
+      obj.localTiles.forEach(({ x, y, id, flag }) => {
+         if (flag === true) {
+            neededFlags--;
+            return;
+         }
+         let i = localTiles.findIndex((x) => x.id === id);
+         if (i === -1) {
+            localTiles.push(matrix[y][x]);
+            if (matrix[y][x].nearbyMines === 0 && matrix[y][x].mine === false) {
+               queue.push(matrix[y][x]);
+            }
+         }
       });
-      return matrix;
+      if (neededFlags > 0) return matrix;
+      if (queue.length > 0) {
+         let nextZero = queue.shift();
+         return revealNeighbors(nextZero, matrix, localTiles, queue);
+      }
+      let updatedMap = [...matrix];
+      console.log(localTiles);
+      localTiles.forEach(
+         (tile) => (updatedMap[tile.y][tile.x] = revealTile(tile))
+      );
+      return updatedMap;
    };
 
    const revealTile = (obj) => {
@@ -88,7 +109,7 @@ const GameWindow = () => {
          this.y = y;
          this.flag = false;
          this.testFlag = false;
-         this.neighbors = [];
+         this.localTiles = [];
          this.mine = false;
          this.nearbyMines = 0;
          this.revealed = false;
@@ -107,16 +128,16 @@ const GameWindow = () => {
       let startY = matrix[y - 1] === undefined ? y : y - 1;
       let endY = matrix[y + 1] === undefined ? y : y + 1;
       let nearbyMines = 0;
-      let neighbors = [];
+      let localTiles = [];
 
       for (let i = startY; i <= endY; i++) {
          for (let j = startX; j <= endX; j++) {
+            localTiles.push(matrix[i][j]);
             if ((i === y) & (j === x)) continue;
             if (matrix[i][j].mine === true) nearbyMines++;
-            neighbors.push([j, i]);
          }
       }
-      return [nearbyMines, neighbors];
+      return [nearbyMines, localTiles];
    };
 
    const createMatrix = () => {
@@ -143,9 +164,9 @@ const GameWindow = () => {
    const populateMineCount = (matrix) => {
       for (let i = 0; i < matrix.length; i++) {
          for (let j = 0; j < matrix[i].length; j++) {
-            const [nearbyMines, neighbors] = getNearbyCount(j, i, matrix);
+            const [nearbyMines, localTiles] = getNearbyCount(j, i, matrix);
             matrix[i][j].nearbyMines = nearbyMines;
-            matrix[i][j].neighbors = neighbors;
+            matrix[i][j].localTiles = localTiles;
          }
       }
       return matrix;
