@@ -31,6 +31,13 @@ const GameWindow = () => {
    const [map, setMap] = useState([]);
    const [gameOver, setGameOver] = useState(false);
 
+   const revealNeighbors = (obj, matrix) => {
+      neighbors.forEach(([x, y]) => {
+         matrix[y][x] = revealTile(matrix[y][x]);
+      });
+      return matrix;
+   };
+
    const revealTile = (obj) => {
       if (obj.mine === true) setGameOver(true);
       obj.revealed = true;
@@ -56,9 +63,7 @@ const GameWindow = () => {
    const middleClick = (obj) => {
       let updatedMap = [...map];
       updatedMap[obj.y][obj.x] = revealTile(obj);
-      obj.neighbors.forEach(([x, y]) => {
-         updatedMap[y][x] = revealTile(updatedMap[y][x]);
-      });
+      updatedMap = revealNeighbors(obj, updatedMap);
       setMap(updatedMap);
    };
    const tileClick = (num, obj) => {
