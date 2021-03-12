@@ -32,7 +32,7 @@ const GameWindow = () => {
    const [gameOver, setGameOver] = useState(false);
 
    const revealNeighbors = (obj, matrix) => {
-      neighbors.forEach(([x, y]) => {
+      obj.neighbors.forEach(([x, y]) => {
          matrix[y][x] = revealTile(matrix[y][x]);
       });
       return matrix;
