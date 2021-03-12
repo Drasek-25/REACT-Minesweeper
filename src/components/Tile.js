@@ -7,19 +7,19 @@ const Tile = ({ obj, tileClick }) => {
    return (
       <div
          className={
-            !obj.revealed ? "minefield_tile" : "minefield_tile revealed"
+            !obj.revealed
+               ? "minefield_tile"
+               : `minefield_tile revealed nearby${obj.nearbyMines}`
          }
          onContextMenu={(e) => e.preventDefault()}
          onMouseDown={(e) => handleClick(e)}
       >
-         <strong>
-            {obj.flag && "🚩"}
-            {obj.testFlag && "🏴"}
-            {!obj.flag &&
-               !obj.testFlag &&
-               obj.revealed &&
-               ((obj.mine && "💣") || obj.nearbyMines)}
-         </strong>
+         {obj.flag && "🚩"}
+         {obj.testFlag && "🏴"}
+         {!obj.flag &&
+            !obj.testFlag &&
+            obj.revealed &&
+            ((obj.mine && "💣") || obj.nearbyMines || " ")}
       </div>
    );
 };

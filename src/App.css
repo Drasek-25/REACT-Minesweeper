@@ -3,6 +3,7 @@ body,
 #root {
    margin: 0px;
    height: 100%;
+   font-family: "Roboto", sans-serif;
 }
 
 .App {
@@ -25,18 +26,54 @@ body,
    flex-direction: row;
 }
 .minefield_tile {
-   border: 1px black solid;
-   background-color: yellow;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-weight: 900;
+   border: 1px rgb(51, 51, 51) solid;
+   background-color: rgb(79, 224, 224);
    height: 25px;
    width: 25px;
-   text-align: center;
 }
-.revealed {
-   background-color: burlywood;
+.minefield_tile:not(.revealed) {
+   /* box-shadow: inset -2px -2px 1px 0px rgb(90, 90, 90),
+      inset 2px 2px 1px 0px #cacaca; */
+}
+.minefield_tile.revealed {
+   background-color: rgb(212, 212, 212);
+}
+.minefield_tile.nearby1 {
+   color: #0009f6;
+}
+.minefield_tile.nearby2 {
+   color: #007e04;
+}
+.minefield_tile.nearby3 {
+   color: #fd1400;
+}
+.minefield_tile.nearby4 {
+   color: #010281;
+}
+.minefield_tile.nearby5 {
+   color: #810503;
+}
+.minefield_tile.nearby6 {
+   color: #008080;
+}
+.minefield_tile.nearby7 {
+   color: #0f0f0f;
+}
+.minefield_tile.nearby8 {
+   color: #808080;
 }
 .popup {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   padding: 30px;
+   font-size: 30px;
    position: absolute;
    background-color: black;
-   width: 100px;
-   height: 100px;
+   color: white;
 }

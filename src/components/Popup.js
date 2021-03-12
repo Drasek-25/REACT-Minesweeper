@@ -1,7 +1,8 @@
 const Popup = () => {
    return (
       <div className="popup">
-         <div></div>
+         <div>YOU LOSE!</div>
+         <div>YOU SO STUUUPIIID</div>
       </div>
    );
 };
