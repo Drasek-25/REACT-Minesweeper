@@ -30,6 +30,7 @@ const GameWindow = () => {
    const [settings, setSettings] = useState(mapTypes.large);
    const [map, setMap] = useState([]);
    const [gameOver, setGameOver] = useState(false);
+   const [firstClick, setFirstClick] = useState(true);
 
    const revealNeighbors = (obj, matrix, localTiles = [], queue = []) => {
       let neededFlags = obj.nearbyMines;
@@ -66,8 +67,15 @@ const GameWindow = () => {
    };
    const leftClick = (obj) => {
       let updatedMap = [...map];
+      if (firstClick === true) {
+         generateMap(obj, updatedMap);
+      }
       updatedMap[obj.y][obj.x] = revealTile(obj);
       setMap(updatedMap);
+      if (firstClick === true) {
+         setFirstClick(false);
+         middleClick(updatedMap[obj.y][obj.x]);
+      }
    };
    const rightClick = (obj) => {
       let updatedMap = [...map];
@@ -116,7 +124,7 @@ const GameWindow = () => {
       }
    }
 
-   const randomLocation = () => {
+   const randomCords = () => {
       let x = Math.floor(Math.random() * (settings.width - 1));
       let y = Math.floor(Math.random() * (settings.height - 1));
       return [x, y];
@@ -152,9 +160,15 @@ const GameWindow = () => {
       return matrix;
    };
 
-   const populateMines = (matrix) => {
+   const populateMines = (obj, matrix) => {
       for (let i = 0; i < settings.mines; i++) {
-         let [x, y] = randomLocation();
+         let [x, y] = randomCords();
+         if (
+            (obj.x + 1 === x || obj.x - 1 === x || obj.x === x) &&
+            (obj.y + 1 === y || obj.y - 1 === y || obj.y === y)
+         ) {
+            continue;
+         }
          if (matrix[y][x].mine === false) matrix[y][x].mine = true;
          else i--;
       }
@@ -172,19 +186,19 @@ const GameWindow = () => {
       return matrix;
    };
 
-   const generateMap = () => {
-      let newMap = populateMineCount(populateMines(createMatrix()));
+   const generateMap = (obj, matrix) => {
+      let newMap = populateMineCount(populateMines(obj, matrix));
       console.log(newMap);
-      return newMap;
+      setMap(newMap);
    };
 
    useEffect(() => {
-      setMap(generateMap());
+      setMap(createMatrix());
    }, []);
 
    return (
       <div className="gameWindow">
-         {gameOver && <Popup />}
+         {/* {gameOver && <Popup />} */}
          <Minefield map={map} tileClick={tileClick} />
       </div>
    );
