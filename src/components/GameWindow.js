@@ -38,16 +38,18 @@ const GameWindow = () => {
    const [firstClick, setFirstClick] = useState(true);
    const [minesLeft, setMinesLeft] = useState(mapTypes.large.mines);
 
-   const revealNeighbors = (obj, matrix, localTiles = [], queue = []) => {
+   const revealNeighbors = (obj, matrix, tileArr = [], queue = []) => {
+      obj = matrix[obj.y][obj.x];
       let neededFlags = obj.nearbyMines;
-      obj.localTiles.forEach(({ x, y, id, flag }) => {
-         if (flag === true) {
+      obj.localTiles.forEach(({ x, y }) => {
+         let tile = matrix[y][x];
+         if (tile.flag === true) {
             neededFlags--;
             return;
          }
-         let i = localTiles.findIndex((x) => x.id === id);
+         let i = tileArr.findIndex((x) => x.id === tile.id);
          if (i === -1) {
-            localTiles.push(matrix[y][x]);
+            tileArr.push(matrix[y][x]);
             if (matrix[y][x].nearbyMines === 0 && matrix[y][x].mine === false) {
                queue.push(matrix[y][x]);
             }
@@ -56,17 +58,16 @@ const GameWindow = () => {
       if (neededFlags > 0) return matrix;
       if (queue.length > 0) {
          let nextZero = queue.shift();
-         return revealNeighbors(nextZero, matrix, localTiles, queue);
+         return revealNeighbors(nextZero, matrix, tileArr, queue);
       }
       let updatedMap = [...matrix];
-      localTiles.forEach(
+      tileArr.forEach(
          (tile) => (updatedMap[tile.y][tile.x] = revealTile(tile))
       );
       return updatedMap;
    };
 
    const endGame = async (matrix) => {
-      const delay = (y, x) => {};
       setGameOver(true);
       let timer = 100;
       for (let i = 0; i < map.length; i++) {
@@ -190,7 +191,7 @@ const GameWindow = () => {
 
       for (let i = startY; i <= endY; i++) {
          for (let j = startX; j <= endX; j++) {
-            localTiles.push(matrix[i][j]);
+            localTiles.push({ ...matrix[i][j], localTiles: [] });
             if ((i === y) & (j === x)) continue;
             if (matrix[i][j].mine === true) nearbyMines++;
          }

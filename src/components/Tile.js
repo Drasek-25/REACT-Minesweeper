@@ -1,7 +1,6 @@
 const Tile = ({ obj, tileClick }) => {
    const handleClick = (e) => {
       e.preventDefault();
-      console.log(e);
       tileClick(e, obj);
    };
 
