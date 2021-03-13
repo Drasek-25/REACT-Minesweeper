@@ -87,16 +87,13 @@ body,
    height: 50px;
    background-color: white;
    display: flex;
-   justify-content: space-between;
+   justify-content: space-around;
    align-items: center;
 }
 .displayBar_map--button {
-   margin-left: 10px;
    padding: 4px 8px;
 }
-.displayBar_mines {
-   margin-right: 10px;
-}
+
 .difficultyDropdown {
    display: flex;
    flex-direction: column;
@@ -106,6 +103,7 @@ body,
    margin-top: 100px;
    margin-left: 10px;
 }
+
 .highlight {
    filter: brightness(150%);
 }

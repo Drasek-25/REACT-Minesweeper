@@ -1,8 +1,15 @@
 import { useState } from "react";
 
 import DifficultyDropdown from "./DifficultyDropdown";
+import Timer from "./Timer";
 
-const DisplayBar = ({ settings, mapTypes, setSettings, minesLeft }) => {
+const DisplayBar = ({
+   settings,
+   mapTypes,
+   setSettings,
+   minesLeft,
+   firstClick,
+}) => {
    const [dropdownActive, setDropdownActive] = useState(false);
 
    const handleDropdown = () => {
@@ -13,7 +20,6 @@ const DisplayBar = ({ settings, mapTypes, setSettings, minesLeft }) => {
          <button className="displayBar_map--button" onClick={handleDropdown}>
             {settings.name} ▽
          </button>
-         <span className="displayBar_mines">💣 {minesLeft}</span>
          {dropdownActive && (
             <DifficultyDropdown
                handleDropdown={handleDropdown}
@@ -21,6 +27,8 @@ const DisplayBar = ({ settings, mapTypes, setSettings, minesLeft }) => {
                mapTypes={mapTypes}
             />
          )}
+         <span className="displayBar_mines">💣 {minesLeft}</span>
+         <Timer firstClick={firstClick} />
       </div>
    );
 };
