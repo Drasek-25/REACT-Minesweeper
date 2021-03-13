@@ -86,3 +86,19 @@ body,
    justify-content: space-between;
    align-items: center;
 }
+.displayBar_map--button {
+   margin-left: 10px;
+   padding: 4px 8px;
+}
+.displayBar_mines {
+   margin-right: 10px;
+}
+.difficultyDropdown {
+   display: flex;
+   flex-direction: column;
+   padding: 4px 8px;
+   position: absolute;
+   background-color: violet;
+   margin-top: 100px;
+   margin-left: 10px;
+}

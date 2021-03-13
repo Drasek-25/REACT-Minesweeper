@@ -7,6 +7,7 @@ import DisplayBar from "./DisplayBar";
 const GameWindow = () => {
    const mapTypes = {
       small: {
+         name: "Small",
          height: 8,
          width: 8,
          totalSquares: 64,
@@ -14,6 +15,7 @@ const GameWindow = () => {
          mines: 10,
       },
       medium: {
+         name: "Medium",
          height: 13,
          width: 15,
          totalSquares: 195,
@@ -21,6 +23,7 @@ const GameWindow = () => {
          mines: 40,
       },
       large: {
+         name: "Large",
          height: 16,
          width: 30,
          totalSquares: 480,
@@ -30,8 +33,10 @@ const GameWindow = () => {
    };
    const [settings, setSettings] = useState(mapTypes.large);
    const [map, setMap] = useState([]);
+   const [gameWin, setGameWin] = useState(false);
    const [gameOver, setGameOver] = useState(false);
    const [firstClick, setFirstClick] = useState(true);
+   const [minesLeft, setMinesLeft] = useState(mapTypes.large.mines);
 
    const revealNeighbors = (obj, matrix, localTiles = [], queue = []) => {
       let neededFlags = obj.nearbyMines;
@@ -62,7 +67,9 @@ const GameWindow = () => {
 
    const revealTile = (obj) => {
       if (obj.mine === true) setGameOver(true);
-      obj.revealed = true;
+      if (obj.revealed === false) {
+         obj.revealed = true;
+      }
       return obj;
    };
    const leftClick = (obj) => {
@@ -80,11 +87,13 @@ const GameWindow = () => {
    const rightClick = (obj) => {
       let updatedMap = [...map];
       if (obj.flag) {
+         setMinesLeft(minesLeft + 1);
          updatedMap[obj.y][obj.x].testFlag = true;
          updatedMap[obj.y][obj.x].flag = false;
       } else if (obj.testFlag) {
          updatedMap[obj.y][obj.x].testFlag = false;
       } else {
+         setMinesLeft(minesLeft - 1);
          updatedMap[obj.y][obj.x].flag = true;
       }
       setMap(updatedMap);
@@ -167,6 +176,7 @@ const GameWindow = () => {
             (obj.x + 1 === x || obj.x - 1 === x || obj.x === x) &&
             (obj.y + 1 === y || obj.y - 1 === y || obj.y === y)
          ) {
+            i--;
             continue;
          }
          if (matrix[y][x].mine === false) matrix[y][x].mine = true;
@@ -191,14 +201,24 @@ const GameWindow = () => {
       setMap(newMap);
    };
 
+   // useEffect(() => {
+   //    setMap(createMatrix());
+   // }, []);
    useEffect(() => {
       setMap(createMatrix());
-   }, []);
+      setFirstClick(true);
+      setMinesLeft(settings.mines);
+   }, [settings]);
 
    return (
       <div className="gameWindow">
-         {gameOver && <Popup />}
-         <DisplayBar />
+         {(gameOver || gameWin) && <Popup />}
+         <DisplayBar
+            settings={settings}
+            mapTypes={mapTypes}
+            setSettings={setSettings}
+            minesLeft={minesLeft}
+         />
          <Minefield map={map} tileClick={tileClick} />
       </div>
    );
