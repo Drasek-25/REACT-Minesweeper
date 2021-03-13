@@ -65,8 +65,27 @@ const GameWindow = () => {
       return updatedMap;
    };
 
+   const endGame = async (matrix) => {
+      const delay = (y, x) => {};
+      setGameOver(true);
+      let timer = 100;
+      for (let i = 0; i < map.length; i++) {
+         for (let j = 0; j < map[i].length; j++) {
+            if (matrix[i][j].mine === true) {
+               setTimeout(() => {
+                  let updatedMap = [...matrix];
+                  updatedMap[i][j].explode = true;
+                  updatedMap[i][j].revealed = true;
+                  setMap(updatedMap);
+               }, timer);
+               timer += 100;
+            }
+         }
+      }
+   };
+
    const revealTile = (obj) => {
-      if (obj.mine === true) setGameOver(true);
+      if (obj.mine === true) endGame(map);
       if (obj.revealed === false) {
          obj.revealed = true;
       }
@@ -151,12 +170,13 @@ const GameWindow = () => {
          this.nearbyMines = 0;
          this.revealed = false;
          this.highlight = false;
+         this.explode = false;
       }
    }
 
    const randomCords = () => {
-      let x = Math.floor(Math.random() * (settings.width - 1));
-      let y = Math.floor(Math.random() * (settings.height - 1));
+      let x = Math.floor(Math.random() * settings.width);
+      let y = Math.floor(Math.random() * settings.height);
       return [x, y];
    };
 

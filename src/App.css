@@ -67,6 +67,10 @@ body,
 .minefield_tile.nearby8 {
    color: #808080;
 }
+.minefield_tile.revealed.explode {
+   transition: background-color 0.3s ease-in;
+   background-color: red;
+}
 .popup {
    display: flex;
    justify-content: center;

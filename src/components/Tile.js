@@ -8,10 +8,11 @@ const Tile = ({ obj, tileClick }) => {
    return (
       <div
          className={
-            !obj.revealed
+            (!obj.revealed
                ? "minefield_tile" +
                  `${obj.highlight && !obj.flag ? " highlight" : ""}`
-               : `minefield_tile revealed nearby${obj.nearbyMines}`
+               : `minefield_tile revealed nearby${obj.nearbyMines}`) +
+            `${obj.explode ? " explode" : ""}`
          }
          onContextMenu={(e) => e.preventDefault()}
          onMouseDown={(e) => handleClick(e)}
