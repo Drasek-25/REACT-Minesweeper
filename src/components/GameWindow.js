@@ -105,19 +105,38 @@ const GameWindow = () => {
       updatedMap = revealNeighbors(obj, updatedMap);
       setMap(updatedMap);
    };
-   const tileClick = (num, obj) => {
-      switch (num) {
-         case 1:
-            leftClick(obj);
-            break;
-         case 2:
-            middleClick(obj);
-            break;
-         case 3:
-            rightClick(obj);
-            break;
-         default:
-            break;
+   const midMouseUpStyle = (obj) => {
+      let updatedMap = [...map];
+      obj.localTiles.forEach(({ x, y }) => {
+         updatedMap[y][x].highlight = false;
+      });
+      setMap(updatedMap);
+   };
+   const midMouseDownStyle = (obj) => {
+      let updatedMap = [...map];
+      obj.localTiles.forEach(({ x, y }) => {
+         updatedMap[y][x].highlight = true;
+      });
+      setMap(updatedMap);
+   };
+   const tileClick = (e, obj) => {
+      if (e.type === "mousedown") {
+         switch (e.nativeEvent.which) {
+            case 1:
+               leftClick(obj);
+               break;
+            case 2:
+               midMouseDownStyle(obj);
+               middleClick(obj);
+               break;
+            case 3:
+               rightClick(obj);
+               break;
+            default:
+               break;
+         }
+      } else {
+         if (e.nativeEvent.which === 2) midMouseUpStyle(obj);
       }
    };
    class Tile {
@@ -131,6 +150,7 @@ const GameWindow = () => {
          this.mine = false;
          this.nearbyMines = 0;
          this.revealed = false;
+         this.highlight = false;
       }
    }
 
@@ -202,9 +222,6 @@ const GameWindow = () => {
       setMap(newMap);
    };
 
-   // useEffect(() => {
-   //    setMap(createMatrix());
-   // }, []);
    useEffect(() => {
       setMap(createMatrix());
       setFirstClick(true);

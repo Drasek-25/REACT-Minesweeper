@@ -98,7 +98,10 @@ body,
    flex-direction: column;
    padding: 4px 8px;
    position: absolute;
-   background-color: violet;
+   background-color: grey;
    margin-top: 100px;
    margin-left: 10px;
+}
+.highlight {
+   filter: brightness(150%);
 }
