@@ -85,6 +85,7 @@ const GameWindow = () => {
       }
    };
    const rightClick = (obj) => {
+      if (obj.revealed) return;
       let updatedMap = [...map];
       if (obj.flag) {
          setMinesLeft(minesLeft + 1);
