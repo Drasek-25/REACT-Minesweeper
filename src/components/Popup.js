@@ -1,4 +1,4 @@
-const Popup = ({ gameOver, gameWin }) => {
+const Popup = ({ gameOver, gameWin, restartGame }) => {
    const winMessage = () => {
       return (
          <>
@@ -20,6 +20,9 @@ const Popup = ({ gameOver, gameWin }) => {
       <div className="popup">
          {gameOver && loseMessage()}
          {gameWin && winMessage()}
+         <button className="popup_button-restart" onClick={restartGame}>
+            Play Again?
+         </button>
       </div>
    );
 };

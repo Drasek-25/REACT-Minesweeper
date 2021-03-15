@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Minefield from "./Minefield";
 import Popup from "./Popup";
 import DisplayBar from "./DisplayBar";
+
 let safeRemain;
 const GameWindow = () => {
    const mapTypes = {
@@ -37,8 +38,6 @@ const GameWindow = () => {
    const [gameOver, setGameOver] = useState(false);
    const [firstClick, setFirstClick] = useState(true);
    const [minesLeft, setMinesLeft] = useState(mapTypes.large.mines);
-
-   // const [safeRemain, setSafeRemain] = useState(mapTypes.large.safeSquares);
 
    const revealNeighbors = (obj, matrix, tileArr = [], queue = []) => {
       obj = matrix[obj.y][obj.x];
@@ -252,19 +251,28 @@ const GameWindow = () => {
       setMap(newMap);
    };
 
-   useEffect(() => {
+   const restartGame = () => {
       setMap(createMatrix());
       setFirstClick(true);
       setMinesLeft(settings.mines);
-      console.log(safeRemain);
+      setGameWin(false);
+      setGameOver(false);
       safeRemain = settings.safeSquares;
       console.log(safeRemain);
+   };
+
+   useEffect(() => {
+      restartGame();
    }, [settings]);
 
    return (
       <div className="gameWindow">
          {(gameOver || gameWin) && (
-            <Popup gameOver={gameOver} gameWin={gameWin} />
+            <Popup
+               gameOver={gameOver}
+               gameWin={gameWin}
+               restartGame={restartGame}
+            />
          )}
          <DisplayBar
             settings={settings}
