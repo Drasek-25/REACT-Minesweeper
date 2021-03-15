@@ -17,16 +17,18 @@ const DisplayBar = ({
    };
    return (
       <div className="displayBar">
-         <button className="displayBar_map--button" onClick={handleDropdown}>
-            {settings.name} ▽
-         </button>
-         {dropdownActive && (
-            <DifficultyDropdown
-               handleDropdown={handleDropdown}
-               setSettings={setSettings}
-               mapTypes={mapTypes}
-            />
-         )}
+         <div className="displayBar_dd-wrapper">
+            <button className="displayBar_map--button" onClick={handleDropdown}>
+               {settings.name} ▽
+            </button>
+            {dropdownActive && (
+               <DifficultyDropdown
+                  handleDropdown={handleDropdown}
+                  setSettings={setSettings}
+                  mapTypes={mapTypes}
+               />
+            )}
+         </div>
          <span className="displayBar_mines">💣 {minesLeft}</span>
          <Timer firstClick={firstClick} />
       </div>
