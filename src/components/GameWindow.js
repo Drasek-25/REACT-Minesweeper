@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Minefield from "./Minefield";
 import Popup from "./Popup";
 import DisplayBar from "./DisplayBar";
-
+let safeRemain;
 const GameWindow = () => {
    const mapTypes = {
       small: {
@@ -38,6 +38,8 @@ const GameWindow = () => {
    const [firstClick, setFirstClick] = useState(true);
    const [minesLeft, setMinesLeft] = useState(mapTypes.large.mines);
 
+   // const [safeRemain, setSafeRemain] = useState(mapTypes.large.safeSquares);
+
    const revealNeighbors = (obj, matrix, tileArr = [], queue = []) => {
       obj = matrix[obj.y][obj.x];
       let neededFlags = obj.nearbyMines;
@@ -67,7 +69,7 @@ const GameWindow = () => {
       return updatedMap;
    };
 
-   const endGame = async (matrix) => {
+   const loseGame = (matrix) => {
       setGameOver(true);
       let timer = 100;
       for (let i = 0; i < map.length; i++) {
@@ -85,9 +87,16 @@ const GameWindow = () => {
       }
    };
 
+   const winGame = () => {
+      setGameWin(true);
+   };
+
    const revealTile = (obj) => {
-      if (obj.mine === true) endGame(map);
+      if (obj.mine === true) loseGame(map);
       if (obj.revealed === false) {
+         if (safeRemain === 1) winGame();
+         safeRemain--;
+         console.log(safeRemain);
          obj.revealed = true;
       }
       return obj;
@@ -247,11 +256,16 @@ const GameWindow = () => {
       setMap(createMatrix());
       setFirstClick(true);
       setMinesLeft(settings.mines);
+      console.log(safeRemain);
+      safeRemain = settings.safeSquares;
+      console.log(safeRemain);
    }, [settings]);
 
    return (
       <div className="gameWindow">
-         {(gameOver || gameWin) && <Popup />}
+         {(gameOver || gameWin) && (
+            <Popup gameOver={gameOver} gameWin={gameWin} />
+         )}
          <DisplayBar
             settings={settings}
             mapTypes={mapTypes}
