@@ -22,7 +22,7 @@ const Tile = ({ obj, tileClick }) => {
          {!obj.flag &&
             !obj.testFlag &&
             obj.revealed &&
-            ((obj.mine && "💣") || obj.nearbyMines || " ")}
+            ((obj.mine && "💥") || obj.nearbyMines || " ")}
       </div>
    );
 };

@@ -99,7 +99,6 @@ const GameWindow = () => {
       if (obj.revealed === false) {
          if (safeRemain === 1) winGame();
          safeRemain--;
-         console.log(safeRemain);
          obj.revealed = true;
       }
       return obj;
@@ -263,7 +262,6 @@ const GameWindow = () => {
       setGameWin(false);
       setGameOver(false);
       safeRemain = settings.safeSquares;
-      console.log(safeRemain);
    };
 
    const handleCustomMap = ({ height, width, mines }) => {
