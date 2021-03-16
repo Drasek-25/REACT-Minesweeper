@@ -107,6 +107,9 @@ const GameWindow = () => {
       let updatedMap = [...map];
       if (firstClick === true) {
          generateMap(obj, updatedMap);
+      } else if (obj.nearbyMines === 0) {
+         middleClick(updatedMap[obj.y][obj.x]);
+         return;
       }
       updatedMap[obj.y][obj.x] = revealTile(obj);
       setMap(updatedMap);
