@@ -108,18 +108,21 @@ const GameWindow = () => {
       if (firstClick === true) {
          generateMap(obj, updatedMap);
       } else if (obj.nearbyMines === 0) {
-         middleClick(updatedMap[obj.y][obj.x]);
+         updatedMap = revealNeighbors(updatedMap[obj.y][obj.x], updatedMap);
+         setMap(updatedMap);
          return;
       }
       updatedMap[obj.y][obj.x] = revealTile(obj);
       setMap(updatedMap);
       if (firstClick === true) {
          setFirstClick(false);
-         middleClick(updatedMap[obj.y][obj.x]);
+         updatedMap = revealNeighbors(updatedMap[obj.y][obj.x], updatedMap);
+         setMap(updatedMap);
       }
    };
    const rightClick = (obj) => {
       if (obj.revealed) return;
+      if (firstClick === true) return;
       let updatedMap = [...map];
       if (obj.flag) {
          setMinesLeft(minesLeft + 1);
@@ -134,6 +137,7 @@ const GameWindow = () => {
       setMap(updatedMap);
    };
    const middleClick = (obj) => {
+      if (firstClick === true) return;
       let updatedMap = [...map];
       updatedMap[obj.y][obj.x] = revealTile(obj);
       updatedMap = revealNeighbors(obj, updatedMap);
