@@ -37,6 +37,7 @@ const GameWindow = () => {
    const [map, setMap] = useState([]);
    const [gameWin, setGameWin] = useState(false);
    const [gameOver, setGameOver] = useState(false);
+   const [customMapWindow, setCustomMapWindow] = useState(false);
    const [firstClick, setFirstClick] = useState(true);
    const [minesLeft, setMinesLeft] = useState(mapTypes.large.mines);
 
@@ -265,17 +266,32 @@ const GameWindow = () => {
       console.log(safeRemain);
    };
 
+   const handleCustomMap = ({ height, width, mines }) => {
+      const customMap = {
+         name: "Custom",
+         height: height,
+         width: width,
+         totalSquares: height * width,
+         safeSquares: height * width - mines,
+         mines: mines,
+      };
+      setSettings(customMap);
+      setCustomMapWindow(false);
+   };
+
    useEffect(() => {
       restartGame();
    }, [settings]);
 
    return (
       <div className="gameWindow">
-         {(gameOver || gameWin) && (
+         {(gameOver || gameWin || customMapWindow) && (
             <Popup
                gameOver={gameOver}
                gameWin={gameWin}
+               customMapWindow={customMapWindow}
                restartGame={restartGame}
+               handleCustomMap={handleCustomMap}
             />
          )}
          <DisplayBar
@@ -284,6 +300,7 @@ const GameWindow = () => {
             setSettings={setSettings}
             minesLeft={minesLeft}
             firstClick={firstClick}
+            setCustomMapWindow={setCustomMapWindow}
          />
          <Minefield map={map} tileClick={tileClick} />
       </div>

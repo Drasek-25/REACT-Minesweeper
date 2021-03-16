@@ -1,8 +1,18 @@
-const Popup = ({ gameOver, gameWin, restartGame }) => {
+import CustomGameSetup from "./CustomGameSetup";
+const Popup = ({
+   gameOver,
+   gameWin,
+   restartGame,
+   handleCustomMap,
+   customMapWindow,
+}) => {
    const winMessage = () => {
       return (
          <>
             <div>YOU WIN!</div>
+            <button className="popup_button" onClick={restartGame}>
+               Play Again?
+            </button>
          </>
       );
    };
@@ -10,6 +20,9 @@ const Popup = ({ gameOver, gameWin, restartGame }) => {
       return (
          <>
             <div>YOU LOSE!</div>
+            <button className="popup_button" onClick={restartGame}>
+               Play Again?
+            </button>
          </>
       );
    };
@@ -18,9 +31,9 @@ const Popup = ({ gameOver, gameWin, restartGame }) => {
       <div className="popup">
          {gameOver && loseMessage()}
          {gameWin && winMessage()}
-         <button className="popup_button-restart" onClick={restartGame}>
-            Play Again?
-         </button>
+         {customMapWindow && (
+            <CustomGameSetup handleCustomMap={handleCustomMap} />
+         )}
       </div>
    );
 };

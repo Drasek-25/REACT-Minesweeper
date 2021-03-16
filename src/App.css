@@ -86,7 +86,7 @@ body,
    background-color: #6B5428;
    color: white;
 }
-.popup_button-restart{
+.popup_button{
    padding: 8px 16px;
    margin-top: 14px;
    background-color: #644108;
@@ -95,6 +95,31 @@ body,
    color: azure;
    font-size: 16px;
    outline: none;
+}
+.popup_custom{
+   width: 130px; 
+   display: flex;
+   justify-content: center;
+   align-content: center;
+   flex-direction: column;
+}
+.popup_custom-row{
+   display: flex;
+   justify-content: space-between;
+}
+.popup_custom-row:not(:first-child){
+   margin-top: 14px;
+}
+.popup_custom-text{
+   font-size: 20px;
+}
+.popup_custom-input{
+   margin-left: 6px;
+   font-size: 18px;
+   width:30px;
+   padding: 4px 6px;
+   border: none;
+   border-radius: 4px;
 }
 .displayBar {
    width: calc(100% - 2px);

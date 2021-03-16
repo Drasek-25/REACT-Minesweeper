@@ -9,23 +9,25 @@ const DisplayBar = ({
    setSettings,
    minesLeft,
    firstClick,
+   setCustomMapWindow,
 }) => {
    const [dropdownActive, setDropdownActive] = useState(false);
 
-   const handleDropdown = () => {
+   const toggleDropdown = () => {
       setDropdownActive(!dropdownActive);
    };
    return (
       <div className="displayBar">
          <div className="displayBar_dd-wrapper">
-            <button className="displayBar_map--button" onClick={handleDropdown}>
+            <button className="displayBar_map--button" onClick={toggleDropdown}>
                {settings.name} ▽
             </button>
             {dropdownActive && (
                <DifficultyDropdown
-                  handleDropdown={handleDropdown}
+                  toggleDropdown={toggleDropdown}
                   setSettings={setSettings}
                   mapTypes={mapTypes}
+                  setCustomMapWindow={setCustomMapWindow}
                />
             )}
          </div>
