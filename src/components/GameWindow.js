@@ -138,6 +138,7 @@ const GameWindow = () => {
    };
    const middleClick = (obj) => {
       if (firstClick === true) return;
+      if (obj.flag === true) return;
       let updatedMap = [...map];
       updatedMap[obj.y][obj.x] = revealTile(obj);
       updatedMap = revealNeighbors(obj, updatedMap);
