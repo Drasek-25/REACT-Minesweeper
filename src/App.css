@@ -10,7 +10,7 @@ body,
 .App {
    height: 100%;
    width: 100%;
-   background-color: #0f0f0f;
+   background-color: #444444;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -20,6 +20,7 @@ body,
    justify-content: center;
    align-items: center;
    flex-direction: column;
+   border: 1px rgb(51, 51, 51) solid;
 }
 .minefield {
 }
@@ -32,14 +33,14 @@ body,
    justify-content: center;
    align-items: center;
    font-weight: 900;
-   border: 1px rgb(51, 51, 51) solid;
+   border: rgb(51, 51, 51) solid;
+   border-width: 0px 1px 1px 0px;
    background-color:#71992D;
    height: 25px;
    width: 25px;
 }
-.minefield_tile:not(.revealed) {
-   /* box-shadow: inset -2px -2px 1px 0px rgb(90, 90, 90),
-      inset 2px 2px 1px 0px #cacaca; */
+.minefield_tile:first-child {
+   border-width: 0px 1px 1px 1px;
 }
 .minefield_tile.revealed {
    background-color:#EAD0A8
@@ -80,16 +81,29 @@ body,
    padding: 30px;
    font-size: 30px;
    position: absolute;
-   background-color: black;
+   border: 1px black solid;
+   border-radius: 16px;
+   background-color: #6B5428;
    color: white;
 }
+.popup_button-restart{
+   padding: 8px 16px;
+   margin-top: 14px;
+   background-color: #644108;
+   border-radius: 4px;
+   border: none;
+   color: azure;
+   font-size: 16px;
+   outline: none;
+}
 .displayBar {
-   width: 100%;
+   width: calc(100% - 2px);
    height: 50px;
    background-color: #6B5428;
    display: flex;
    justify-content: space-around;
    align-items: center;
+   border: 1px rgb(51, 51, 51) solid;
 }
 .displayBar_map--button {
    padding: 8px 16px;

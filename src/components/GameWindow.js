@@ -5,6 +5,7 @@ import Popup from "./Popup";
 import DisplayBar from "./DisplayBar";
 
 let safeRemain;
+let explosionTimers = [];
 const GameWindow = () => {
    const mapTypes = {
       small: {
@@ -74,12 +75,14 @@ const GameWindow = () => {
       for (let i = 0; i < map.length; i++) {
          for (let j = 0; j < map[i].length; j++) {
             if (matrix[i][j].mine === true) {
-               setTimeout(() => {
-                  let updatedMap = [...matrix];
-                  updatedMap[i][j].explode = true;
-                  updatedMap[i][j].revealed = true;
-                  setMap(updatedMap);
-               }, timer);
+               explosionTimers.push(
+                  setTimeout(() => {
+                     let updatedMap = [...matrix];
+                     updatedMap[i][j].explode = true;
+                     updatedMap[i][j].revealed = true;
+                     setMap(updatedMap);
+                  }, timer)
+               );
                timer += 100;
             }
          }
@@ -252,6 +255,7 @@ const GameWindow = () => {
    };
 
    const restartGame = () => {
+      explosionTimers.forEach((timer) => clearTimeout(timer));
       setMap(createMatrix());
       setFirstClick(true);
       setMinesLeft(settings.mines);

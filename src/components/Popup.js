@@ -3,7 +3,6 @@ const Popup = ({ gameOver, gameWin, restartGame }) => {
       return (
          <>
             <div>YOU WIN!</div>
-            <div>YOU SO SMART</div>
          </>
       );
    };
@@ -11,7 +10,6 @@ const Popup = ({ gameOver, gameWin, restartGame }) => {
       return (
          <>
             <div>YOU LOSE!</div>
-            <div>YOU SO STUUUPIIID</div>
          </>
       );
    };
