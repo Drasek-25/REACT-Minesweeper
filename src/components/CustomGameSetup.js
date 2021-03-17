@@ -1,6 +1,6 @@
 import { useState } from "react";
-const CustomGameSetup = ({ handleCustomMap }) => {
-   const initialValues = { height: 0, width: 0, mines: 0 };
+const CustomGameSetup = ({ handleCustomMap, setCustomMapWindow }) => {
+   const initialValues = { height: 16, width: 30, mines: 99 };
    const [customMap, setCustomMap] = useState(initialValues);
    const handleInput = (e) => {
       setCustomMap({ ...customMap, [e.target.name]: e.target.value });
@@ -8,15 +8,6 @@ const CustomGameSetup = ({ handleCustomMap }) => {
    return (
       <div className="popup_custom">
          <div className="popup_custom-fields">
-            <div className="popup_custom-row">
-               <span className="popup_custom-text">Height: </span>
-               <input
-                  className="popup_custom-input"
-                  name="height"
-                  value={customMap.height}
-                  onChange={handleInput}
-               />
-            </div>
             <div className="popup_custom-row">
                <span className="popup_custom-text">Width: </span>
                <input
@@ -27,6 +18,16 @@ const CustomGameSetup = ({ handleCustomMap }) => {
                />
             </div>
             <div className="popup_custom-row">
+               <span className="popup_custom-text">Height: </span>
+               <input
+                  className="popup_custom-input"
+                  name="height"
+                  value={customMap.height}
+                  onChange={handleInput}
+               />
+            </div>
+
+            <div className="popup_custom-row">
                <span className="popup_custom-text">Mines: </span>
                <input
                   className="popup_custom-input"
@@ -36,12 +37,20 @@ const CustomGameSetup = ({ handleCustomMap }) => {
                />
             </div>
          </div>
-         <button
-            className="popup_button"
-            onClick={() => handleCustomMap(customMap)}
-         >
-            Start
-         </button>
+         <div className="popup_button-row">
+            <button
+               className="popup_button"
+               onClick={() => handleCustomMap(customMap)}
+            >
+               Start
+            </button>
+            <button
+               className="popup_button"
+               onClick={() => setCustomMapWindow(false)}
+            >
+               X
+            </button>
+         </div>
       </div>
    );
 };

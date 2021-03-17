@@ -91,11 +91,15 @@ body,
    padding: 8px 16px;
    margin-top: 14px;
    background-color: #644108;
+   border: 1px solid rgb(51, 51, 51);
    border-radius: 4px;
-   border: none;
    color: azure;
    font-size: 16px;
    outline: none;
+}
+.popup_button-row{
+   display: flex;
+   justify-content: space-between;
 }
 .popup_custom{
    width: 130px; 

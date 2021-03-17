@@ -5,6 +5,7 @@ const Popup = ({
    restartGame,
    handleCustomMap,
    customMapWindow,
+   setCustomMapWindow,
 }) => {
    const winMessage = () => {
       return (
@@ -29,10 +30,13 @@ const Popup = ({
 
    return (
       <div className="popup">
-         {gameOver && loseMessage()}
-         {gameWin && winMessage()}
+         {gameOver && !customMapWindow && loseMessage()}
+         {gameWin && !customMapWindow && winMessage()}
          {customMapWindow && (
-            <CustomGameSetup handleCustomMap={handleCustomMap} />
+            <CustomGameSetup
+               handleCustomMap={handleCustomMap}
+               setCustomMapWindow={setCustomMapWindow}
+            />
          )}
       </div>
    );

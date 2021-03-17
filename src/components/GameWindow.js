@@ -298,6 +298,7 @@ const GameWindow = () => {
                customMapWindow={customMapWindow}
                restartGame={restartGame}
                handleCustomMap={handleCustomMap}
+               setCustomMapWindow={setCustomMapWindow}
             />
          )}
          <DisplayBar
