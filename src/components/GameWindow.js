@@ -307,6 +307,8 @@ const GameWindow = () => {
             minesLeft={minesLeft}
             firstClick={firstClick}
             setCustomMapWindow={setCustomMapWindow}
+            gameWin={gameWin}
+            gameOver={gameOver}
          />
          <Minefield map={map} tileClick={tileClick} />
       </div>

@@ -1,15 +1,41 @@
-import { useState, useEffect } from "react";
-const Timer = ({ firstClick }) => {
+import { useState, useEffect, useRef } from "react";
+
+const Timer = ({ firstClick, gameWin, gameOver }) => {
    const [seconds, setSeconds] = useState(0);
+   const [runTimer, setRunTimer] = useState(false);
+   useInterval(() => setSeconds(seconds + 1), runTimer ? 1000 : null);
    useEffect(() => {
-      if (firstClick === true) setSeconds(0);
-      else {
-         setTimeout(() => {
-            setSeconds(seconds + 1);
-         }, 1000);
+      if (firstClick === false) {
+         setRunTimer(true);
+      } else {
+         setSeconds(0);
+         setRunTimer(false);
       }
-   }, [firstClick, seconds]);
+      if (gameWin || gameOver) {
+         setRunTimer(false);
+      }
+   }, [firstClick, gameWin, gameOver]);
 
    return <div className="timer">🕗 {seconds}</div>;
 };
+
+// a custom timer hook shamelessly copied from Dan Ambramov
+function useInterval(callback, delay) {
+   const savedCallback = useRef();
+
+   useEffect(() => {
+      savedCallback.current = callback;
+   }, [callback]);
+
+   useEffect(() => {
+      function tick() {
+         savedCallback.current();
+      }
+      if (delay !== null) {
+         let id = setInterval(tick, delay);
+         return () => clearInterval(id);
+      }
+   }, [delay]);
+}
+
 export default Timer;

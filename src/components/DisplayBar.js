@@ -10,6 +10,8 @@ const DisplayBar = ({
    minesLeft,
    firstClick,
    setCustomMapWindow,
+   gameWin,
+   gameOver,
 }) => {
    const [dropdownActive, setDropdownActive] = useState(false);
 
@@ -32,7 +34,7 @@ const DisplayBar = ({
             )}
          </div>
          <span className="displayBar_mines">💣 {minesLeft}</span>
-         <Timer firstClick={firstClick} />
+         <Timer firstClick={firstClick} gameWin={gameWin} gameOver={gameOver} />
       </div>
    );
 };
