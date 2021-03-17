@@ -97,10 +97,10 @@ const GameWindow = () => {
    const revealTile = (obj) => {
       if (obj.mine === true) loseGame(map);
       else if (obj.revealed === false) {
-         if (safeRemain === 1) winGame();
          safeRemain--;
-         obj.revealed = true;
+         if (safeRemain === 0) winGame();
       }
+      obj.revealed = true;
       return obj;
    };
    const leftClick = (obj) => {
@@ -234,8 +234,11 @@ const GameWindow = () => {
    };
 
    const populateMines = (obj, matrix) => {
+      console.log(obj);
       for (let i = 0; i < settings.mines; i++) {
          let [x, y] = randomCords();
+         //allows first click tile to be 0
+         //should be handled with local tile comparisons instead
          if (
             (obj.x + 1 === x || obj.x - 1 === x || obj.x === x) &&
             (obj.y + 1 === y || obj.y - 1 === y || obj.y === y)
