@@ -96,7 +96,7 @@ const GameWindow = () => {
 
    const revealTile = (obj) => {
       if (obj.mine === true) loseGame(map);
-      if (obj.revealed === false) {
+      else if (obj.revealed === false) {
          if (safeRemain === 1) winGame();
          safeRemain--;
          obj.revealed = true;
@@ -107,7 +107,7 @@ const GameWindow = () => {
       let updatedMap = [...map];
       if (firstClick === true) {
          generateMap(obj, updatedMap);
-      } else if (obj.nearbyMines === 0) {
+      } else if (obj.nearbyMines === 0 && obj.mine !== true) {
          updatedMap = revealNeighbors(updatedMap[obj.y][obj.x], updatedMap);
          setMap(updatedMap);
          return;
@@ -139,12 +139,14 @@ const GameWindow = () => {
    const middleClick = (obj) => {
       if (firstClick === true) return;
       if (obj.flag === true) return;
+      if (obj.revealed === false) return;
       let updatedMap = [...map];
       updatedMap[obj.y][obj.x] = revealTile(obj);
       updatedMap = revealNeighbors(obj, updatedMap);
       setMap(updatedMap);
    };
    const midMouseUpStyle = (obj) => {
+      if (obj.revealed === false) return;
       let updatedMap = [...map];
       obj.localTiles.forEach(({ x, y }) => {
          updatedMap[y][x].highlight = false;
@@ -152,6 +154,7 @@ const GameWindow = () => {
       setMap(updatedMap);
    };
    const midMouseDownStyle = (obj) => {
+      if (obj.revealed === false) return;
       let updatedMap = [...map];
       obj.localTiles.forEach(({ x, y }) => {
          updatedMap[y][x].highlight = true;
