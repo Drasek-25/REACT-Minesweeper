@@ -16,7 +16,7 @@ const Timer = ({ firstClick, gameWin, gameOver }) => {
       }
    }, [firstClick, gameWin, gameOver]);
 
-   return <div className="timer">🕗 {seconds}</div>;
+   return <div className="timer">🕗{seconds}</div>;
 };
 
 // a custom timer hook shamelessly copied from Dan Ambramov

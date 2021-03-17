@@ -33,7 +33,7 @@ const DisplayBar = ({
                />
             )}
          </div>
-         <span className="displayBar_mines">💣 {minesLeft}</span>
+         <span className="displayBar_mines">💣{minesLeft}</span>
          <Timer firstClick={firstClick} gameWin={gameWin} gameOver={gameOver} />
       </div>
    );
