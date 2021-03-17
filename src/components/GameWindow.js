@@ -317,7 +317,7 @@ const GameWindow = () => {
             gameWin={gameWin}
             gameOver={gameOver}
          />
-         <Minefield map={map} tileClick={tileClick} />
+         <Minefield map={map} tileClick={tileClick} settings={settings} />
       </div>
    );
 };
