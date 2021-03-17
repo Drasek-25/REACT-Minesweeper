@@ -19,7 +19,7 @@ const Timer = ({ firstClick, gameWin, gameOver }) => {
    return <div className="timer">🕗{seconds}</div>;
 };
 
-// a custom timer hook shamelessly copied from Dan Ambramov
+// a custom timer hook shamelessly copied from Dan Abramov
 function useInterval(callback, delay) {
    const savedCallback = useRef();
 
