@@ -12,6 +12,8 @@ Recently I was challenged with a few matrix based algorithm challenges, one of t
 
 ▸ The first tile click on a new game is never a mine.
 
+▸ Map size scales based on height.
+
 ▸ Tiles containing no nearby tiles open in clusters.
 
 ▸ The original flag plus a special testing flag that allows for worry free mine location testing.
