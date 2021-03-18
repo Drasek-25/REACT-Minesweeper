@@ -161,7 +161,7 @@ const GameWindow = () => {
       });
       setMap(updatedMap);
    };
-   const tileClick = (e, obj) => {
+   const interactionRouter = (e, obj) => {
       if (e.type === "mousedown") {
          switch (e.nativeEvent.which) {
             case 1:
@@ -179,6 +179,7 @@ const GameWindow = () => {
          }
       } else {
          if (e.nativeEvent.which === 2) midMouseUpStyle(obj);
+         if (e.type === "mouseleave") midMouseUpStyle(obj);
       }
    };
    class Tile {
@@ -317,7 +318,11 @@ const GameWindow = () => {
             gameWin={gameWin}
             gameOver={gameOver}
          />
-         <Minefield map={map} tileClick={tileClick} settings={settings} />
+         <Minefield
+            map={map}
+            interactionRouter={interactionRouter}
+            settings={settings}
+         />
       </div>
    );
 };

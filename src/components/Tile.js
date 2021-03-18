@@ -1,7 +1,7 @@
-const Tile = ({ obj, tileClick }) => {
+const Tile = ({ obj, interactionRouter }) => {
    const handleClick = (e) => {
       e.preventDefault();
-      tileClick(e, obj);
+      interactionRouter(e, obj);
    };
 
    return (
@@ -16,6 +16,7 @@ const Tile = ({ obj, tileClick }) => {
          onContextMenu={(e) => e.preventDefault()}
          onMouseDown={(e) => handleClick(e)}
          onMouseUp={(e) => handleClick(e)}
+         onMouseLeave={(e) => handleClick(e)}
       >
          {obj.flag && "🚩"}
          {obj.testFlag && "🏴"}

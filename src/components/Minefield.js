@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Tile from "./Tile";
 
-const Minefield = ({ map, tileClick, settings }) => {
+const Minefield = ({ map, interactionRouter, settings }) => {
    const [zoom, setZoom] = useState({ zoom: "1" });
    useEffect(() => {
       const lrgMapHeight = 16;
@@ -17,7 +17,11 @@ const Minefield = ({ map, tileClick, settings }) => {
                <div className="minefield_row" key={"row " + map[i][0].y}>
                   {row.map((tile) => {
                      return (
-                        <Tile key={tile.id} obj={tile} tileClick={tileClick} />
+                        <Tile
+                           key={tile.id}
+                           obj={tile}
+                           interactionRouter={interactionRouter}
+                        />
                      );
                   })}
                </div>
