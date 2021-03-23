@@ -34,7 +34,7 @@ I had originally considered going with Canvas to make the game, however I alread
 
 #### Layout
 
-From previous game building experience I knew that I wanted to use a class to handle each individual tile on the game board. In original planning of this class I knew I wanted these properties.
+From previous my previous Breakout clone game, I knew that I wanted to use a class to handle each individual tile on the game board. In original planning of this class I knew I wanted these properties.
 
 ```js
 tile = {
@@ -80,22 +80,22 @@ I began to layout rough ideas about game logic and React component hierarchy fro
 
 This project posed many challenges for me. One of the largest for me was to keep the ever-growing list of functions as DRY and modular as possible, as having all functionality useable by different callers ends up making the code easier to read, understand, and grow. For instance, having `leftClick` and `revealTile` as separate functions that utilize each other allowed many bugs found in development, and features I wanted to add to be easily dealt with at the source.
 
-Hands down the biggest challenge for me to solve was what I have been calling "0 propagation". Minesweeper has always had a nifty feature that made it so if a tile is  revealed that has no nearby mines, referred to with `nearbyMines: 0`, that tile should reveal all of the tiles next to it, and if one of those is a 0 tile, it should reveal all tiles next to it, so and and so forth, until the entire chain of 0 tiles all all of their combined neighbors as revealed. Solving this challenge was the hardest thing I did while working on this game, and as such was the most rewarding. Here is the pseudocode for this function.
+Hands down the biggest challenge for me to solve was what I have been calling "0 propagation". Minesweeper has always had a nifty feature that made it so if a tile is  revealed that has no nearby mines, referred to with `nearbyMines: 0`, that tile should reveal all of the tiles next to it, and if one of those is a 0 tile, it should reveal all tiles next to it, so and and so forth, until the entire chain of 0 tiles and all of their combined neighbors as revealed. Solving this challenge was the hardest thing I did while working on this game, and as such was the most rewarding. Here is the pseudocode for this function.
 
 ```js
-revealNeighbors (tileClicked, currentMap, tilesFound = [], queue =[]) =>{
-    tileClicked.nearbyTiles.ForEach((tile)=>{
+revealNeighbors (tileClicked, currentMap, tilesFound = [], queue =[]) =>
+    tileClicked.nearbyTiles.ForEach(tile) =>
 		if(tile doesnt exist in tilesFound)
             add to tilesFound array
             if(tile is a 0 tile)
                 add to queue
-	})
+
 	if(queue isnt empty)
         remove first index of queue
         run reveal neighbors again with the first index of queue
+        
     reveal all tiles in tile array
     return updatedMap
-} 
 ```
 
 Creating a list of all unique values found, as well as a queue of 0's allowed me to run this function recursively until all 0's in the cluster have been found, and then once that is finished I can reveal all the tiles and return the updated map.
