@@ -106,6 +106,7 @@ const GameWindow = () => {
       return obj;
    };
    const leftClick = (obj) => {
+      if (obj.flag === true || obj.testFlag === true) return;
       let updatedMap = [...map];
       if (firstClick === true) {
          generateMap(obj, updatedMap);
