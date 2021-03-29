@@ -101,6 +101,8 @@ const GameWindow = () => {
          if (safeRemain === 0) winGame();
       }
       obj.revealed = true;
+      obj.flag = false;
+      obj.testFlag = false;
       return obj;
    };
    const leftClick = (obj) => {
