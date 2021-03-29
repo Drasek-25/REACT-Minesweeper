@@ -165,6 +165,7 @@ const GameWindow = () => {
       setMap(updatedMap);
    };
    const interactionRouter = (e, obj) => {
+      if (gameWin === true || gameOver === true) return;
       if (e.type === "mousedown") {
          switch (e.nativeEvent.which) {
             case 1:
