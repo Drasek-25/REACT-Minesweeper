@@ -17,151 +17,6 @@ const GameWindow = () => {
    const [firstClick, setFirstClick] = useState(true);
    const [minesLeft, setMinesLeft] = useState(mapTypes.large.mines);
 
-   const revealNeighbors = (obj, matrix, tileArr = [], queue = []) => {
-      obj = matrix[obj.y][obj.x];
-      let neededFlags = obj.nearbyMines;
-      obj.localTiles.forEach(({ x, y }) => {
-         let tile = matrix[y][x];
-         if (tile.flag === true) {
-            neededFlags--;
-            return;
-         }
-         let i = tileArr.findIndex((x) => x.id === tile.id);
-         if (i === -1) {
-            tileArr.push(matrix[y][x]);
-            if (matrix[y][x].nearbyMines === 0 && matrix[y][x].mine === false) {
-               queue.push(matrix[y][x]);
-            }
-         }
-      });
-      if (neededFlags > 0) return matrix;
-      if (queue.length > 0) {
-         let nextZero = queue.shift();
-         return revealNeighbors(nextZero, matrix, tileArr, queue);
-      }
-      let updatedMap = [...matrix];
-      tileArr.forEach(
-         (tile) => (updatedMap[tile.y][tile.x] = revealTile(tile))
-      );
-      return updatedMap;
-   };
-
-   const loseGame = (matrix) => {
-      setGameOver(true);
-      let timer = 100;
-      for (let i = 0; i < map.length; i++) {
-         for (let j = 0; j < map[i].length; j++) {
-            if (matrix[i][j].mine === true) {
-               explosionTimers.push(
-                  setTimeout(() => {
-                     let updatedMap = [...matrix];
-                     updatedMap[i][j].explode = true;
-                     updatedMap[i][j].revealed = true;
-                     setMap(updatedMap);
-                  }, timer)
-               );
-               timer += 100;
-            }
-         }
-      }
-   };
-
-   const winGame = () => {
-      setGameWin(true);
-   };
-
-   const revealTile = (obj) => {
-      if (obj.mine === true) loseGame(map);
-      else if (obj.revealed === false) {
-         safeRemain--;
-         if (safeRemain === 0) winGame();
-      }
-      obj.revealed = true;
-      obj.flag = false;
-      obj.testFlag = false;
-      return obj;
-   };
-   const leftClick = (obj) => {
-      if (obj.flag === true || obj.testFlag === true) return;
-      let updatedMap = [...map];
-      if (firstClick === true) {
-         generateMap(obj, updatedMap);
-      } else if (obj.nearbyMines === 0 && obj.mine !== true) {
-         updatedMap = revealNeighbors(updatedMap[obj.y][obj.x], updatedMap);
-         setMap(updatedMap);
-         return;
-      }
-      updatedMap[obj.y][obj.x] = revealTile(obj);
-      setMap(updatedMap);
-      if (firstClick === true) {
-         setFirstClick(false);
-         updatedMap = revealNeighbors(updatedMap[obj.y][obj.x], updatedMap);
-         setMap(updatedMap);
-      }
-   };
-   const rightClick = (obj) => {
-      if (obj.revealed) return;
-      if (firstClick === true) return;
-      let updatedMap = [...map];
-      if (obj.flag) {
-         setMinesLeft(minesLeft + 1);
-         updatedMap[obj.y][obj.x].testFlag = true;
-         updatedMap[obj.y][obj.x].flag = false;
-      } else if (obj.testFlag) {
-         updatedMap[obj.y][obj.x].testFlag = false;
-      } else {
-         setMinesLeft(minesLeft - 1);
-         updatedMap[obj.y][obj.x].flag = true;
-      }
-      setMap(updatedMap);
-   };
-   const middleClick = (obj) => {
-      if (firstClick === true) return;
-      if (obj.flag === true) return;
-      if (obj.revealed === false) return;
-      let updatedMap = [...map];
-      updatedMap[obj.y][obj.x] = revealTile(obj);
-      updatedMap = revealNeighbors(obj, updatedMap);
-      setMap(updatedMap);
-   };
-   const midMouseUpStyle = (obj) => {
-      if (obj.revealed === false) return;
-      let updatedMap = [...map];
-      obj.localTiles.forEach(({ x, y }) => {
-         updatedMap[y][x].highlight = false;
-      });
-      setMap(updatedMap);
-   };
-   const midMouseDownStyle = (obj) => {
-      if (obj.revealed === false) return;
-      let updatedMap = [...map];
-      obj.localTiles.forEach(({ x, y }) => {
-         updatedMap[y][x].highlight = true;
-      });
-      setMap(updatedMap);
-   };
-   const interactionRouter = (e, obj) => {
-      if (gameWin === true || gameOver === true) return;
-      if (e.type === "mousedown") {
-         switch (e.nativeEvent.which) {
-            case 1:
-               leftClick(obj);
-               break;
-            case 2:
-               midMouseDownStyle(obj);
-               middleClick(obj);
-               break;
-            case 3:
-               rightClick(obj);
-               break;
-            default:
-               break;
-         }
-      } else {
-         if (e.nativeEvent.which === 2) midMouseUpStyle(obj);
-         if (e.type === "mouseleave") midMouseUpStyle(obj);
-      }
-   };
    class Tile {
       constructor(x, y) {
          this.id = `${x} ${y}`;
@@ -177,30 +32,6 @@ const GameWindow = () => {
          this.explode = false;
       }
    }
-
-   const randomCords = () => {
-      let x = Math.floor(Math.random() * settings.width);
-      let y = Math.floor(Math.random() * settings.height);
-      return [x, y];
-   };
-
-   const getNearbyCount = (x, y, matrix) => {
-      let startX = matrix[y][x - 1] === undefined ? x : x - 1;
-      let endX = matrix[y][x + 1] === undefined ? x : x + 1;
-      let startY = matrix[y - 1] === undefined ? y : y - 1;
-      let endY = matrix[y + 1] === undefined ? y : y + 1;
-      let nearbyMines = 0;
-      let localTiles = [];
-
-      for (let i = startY; i <= endY; i++) {
-         for (let j = startX; j <= endX; j++) {
-            localTiles.push({ ...matrix[i][j], localTiles: [] });
-            if ((i === y) & (j === x)) continue;
-            if (matrix[i][j].mine === true) nearbyMines++;
-         }
-      }
-      return [nearbyMines, localTiles];
-   };
 
    const createMatrix = () => {
       let matrix = [];
@@ -219,15 +50,14 @@ const GameWindow = () => {
       for (let i = 0; i < settings.mines; i++) {
          let [x, y] = randomCords();
          //allows first click tile to be 0
-         //should be handled with local tile comparisons instead
          if (
-            (obj.x + 1 === x || obj.x - 1 === x || obj.x === x) &&
-            (obj.y + 1 === y || obj.y - 1 === y || obj.y === y)
+            obj.x <= x + 1 &&
+            obj.x >= x - 1 &&
+            obj.y <= y + 1 &&
+            obj.y >= y - 1
          ) {
             i--;
-            continue;
-         }
-         if (matrix[y][x].mine === false) matrix[y][x].mine = true;
+         } else if (matrix[y][x].mine === false) matrix[y][x].mine = true;
          else i--;
       }
       return matrix;
@@ -270,6 +100,182 @@ const GameWindow = () => {
       };
       setSettings(customMap);
       setCustomMapWindow(false);
+   };
+
+   const revealNeighbors = (obj, matrix, tileArr = [], queue = []) => {
+      obj = matrix[obj.y][obj.x];
+      let neededFlags = obj.nearbyMines;
+      obj.localTiles.forEach(({ x, y }) => {
+         let tile = matrix[y][x];
+         if (tile.flag === true) {
+            neededFlags--;
+            return;
+         }
+         let i = tileArr.findIndex((x) => x.id === tile.id);
+         if (i === -1) {
+            tileArr.push(matrix[y][x]);
+            if (matrix[y][x].nearbyMines === 0 && matrix[y][x].mine === false) {
+               queue.push(matrix[y][x]);
+            }
+         }
+      });
+      if (neededFlags > 0) return matrix;
+      if (queue.length > 0) {
+         let nextZero = queue.shift();
+         return revealNeighbors(nextZero, matrix, tileArr, queue);
+      }
+      let updatedMap = [...matrix];
+      tileArr.forEach(
+         (tile) => (updatedMap[tile.y][tile.x] = revealTile(tile))
+      );
+      return updatedMap;
+   };
+
+   const randomCords = () => {
+      let x = Math.floor(Math.random() * settings.width);
+      let y = Math.floor(Math.random() * settings.height);
+      return [x, y];
+   };
+
+   const getNearbyCount = (x, y, matrix) => {
+      let startX = matrix[y][x - 1] === undefined ? x : x - 1;
+      let endX = matrix[y][x + 1] === undefined ? x : x + 1;
+      let startY = matrix[y - 1] === undefined ? y : y - 1;
+      let endY = matrix[y + 1] === undefined ? y : y + 1;
+      let nearbyMines = 0;
+      let localTiles = [];
+
+      for (let i = startY; i <= endY; i++) {
+         for (let j = startX; j <= endX; j++) {
+            localTiles.push({ ...matrix[i][j], localTiles: [] });
+            if ((i === y) & (j === x)) continue;
+            if (matrix[i][j].mine === true) nearbyMines++;
+         }
+      }
+      return [nearbyMines, localTiles];
+   };
+
+   const loseGame = (matrix) => {
+      setGameOver(true);
+      let timer = 100;
+      for (let i = 0; i < map.length; i++) {
+         for (let j = 0; j < map[i].length; j++) {
+            if (matrix[i][j].mine === true) {
+               explosionTimers.push(
+                  setTimeout(() => {
+                     let updatedMap = [...matrix];
+                     updatedMap[i][j].explode = true;
+                     updatedMap[i][j].revealed = true;
+                     setMap(updatedMap);
+                  }, timer)
+               );
+               timer += 100;
+            }
+         }
+      }
+   };
+
+   const winGame = () => {
+      setGameWin(true);
+   };
+
+   const revealTile = (obj) => {
+      if (obj.mine === true) loseGame(map);
+      else if (obj.revealed === false) {
+         safeRemain--;
+         if (safeRemain === 0) winGame();
+      }
+      obj.revealed = true;
+      obj.flag = false;
+      obj.testFlag = false;
+      return obj;
+   };
+
+   const interactionRouter = (e, obj) => {
+      if (gameWin === true || gameOver === true) return;
+      if (e.type === "mousedown") {
+         switch (e.nativeEvent.which) {
+            case 1:
+               leftClick(obj);
+               break;
+            case 2:
+               midMouseDownStyle(obj);
+               middleClick(obj);
+               break;
+            case 3:
+               rightClick(obj);
+               break;
+            default:
+               break;
+         }
+      } else {
+         if (e.nativeEvent.which === 2) midMouseUpStyle(obj);
+         if (e.type === "mouseleave") midMouseUpStyle(obj);
+      }
+   };
+
+   const leftClick = (obj) => {
+      if (obj.flag === true || obj.testFlag === true) return;
+      let updatedMap = [...map];
+      if (firstClick === true) {
+         generateMap(obj, updatedMap);
+      } else if (obj.nearbyMines === 0 && obj.mine !== true) {
+         updatedMap = revealNeighbors(updatedMap[obj.y][obj.x], updatedMap);
+         setMap(updatedMap);
+         return;
+      }
+      updatedMap[obj.y][obj.x] = revealTile(obj);
+      setMap(updatedMap);
+      if (firstClick === true) {
+         setFirstClick(false);
+         updatedMap = revealNeighbors(updatedMap[obj.y][obj.x], updatedMap);
+         setMap(updatedMap);
+      }
+   };
+
+   const rightClick = (obj) => {
+      if (obj.revealed) return;
+      if (firstClick === true) return;
+      let updatedMap = [...map];
+      if (obj.flag) {
+         setMinesLeft(minesLeft + 1);
+         updatedMap[obj.y][obj.x].testFlag = true;
+         updatedMap[obj.y][obj.x].flag = false;
+      } else if (obj.testFlag) {
+         updatedMap[obj.y][obj.x].testFlag = false;
+      } else {
+         setMinesLeft(minesLeft - 1);
+         updatedMap[obj.y][obj.x].flag = true;
+      }
+      setMap(updatedMap);
+   };
+
+   const middleClick = (obj) => {
+      if (firstClick === true) return;
+      if (obj.flag === true) return;
+      if (obj.revealed === false) return;
+      let updatedMap = [...map];
+      updatedMap[obj.y][obj.x] = revealTile(obj);
+      updatedMap = revealNeighbors(obj, updatedMap);
+      setMap(updatedMap);
+   };
+
+   const midMouseUpStyle = (obj) => {
+      if (obj.revealed === false) return;
+      let updatedMap = [...map];
+      obj.localTiles.forEach(({ x, y }) => {
+         updatedMap[y][x].highlight = false;
+      });
+      setMap(updatedMap);
+   };
+
+   const midMouseDownStyle = (obj) => {
+      if (obj.revealed === false) return;
+      let updatedMap = [...map];
+      obj.localTiles.forEach(({ x, y }) => {
+         updatedMap[y][x].highlight = true;
+      });
+      setMap(updatedMap);
    };
 
    useEffect(() => {
