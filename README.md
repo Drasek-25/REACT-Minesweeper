@@ -2,6 +2,8 @@
 
 ### WIP
 
+[Live View](https://minesweeper.webdevpat.com/)
+
 ## Summary
 
 Recently I was challenged with a few matrix based algorithm challenges, one of the challenges was Minesweeper themed. From solving these challenges I was inspired to try my hand at building my own Minesweeper game. The goal was to utilize React to create a copy of the original Minesweeper game, but I would do so without any online tutorials or guides. This version of Minesweeper is 100% my own creation, from conceptualization of how certain game logic should operate, to the planning and execution of all required functionality. The only portion of this game not my own are the many bugs I only found thanks to many friends who tested the game and gave feedback, and the `useInterval` timer hook I got from a blog post by Dan Abramov.
